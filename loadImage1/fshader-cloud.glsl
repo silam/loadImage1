@@ -21,6 +21,7 @@ in vec2 texCoord;
 
 void main()
 {
+/*
 	float mixfactor;
 	vec3 L = normalize( light_position.xyz - position.xyz);
 	vec3 E = normalize(-position.xyz);
@@ -56,6 +57,7 @@ void main()
 
 	//fColor = amb + diff + spec;
 	//fColor = vec4( vN, 1);
+	*/
 
 	fColor = texture2D(cloudtexture, texCoord);
 }
