@@ -1,4 +1,4 @@
-﻿Build started 4/23/2012 6:59:34 AM.
+﻿Build started 4/23/2012 7:06:31 AM.
      1>Project "C:\Users\silamhome\Documents\Visual Studio 2010\Projects\loadImage1\loadImage1\loadImage1.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\loadImage1.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -67,4 +67,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.01
+Time Elapsed 00:00:01.25

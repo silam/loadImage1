@@ -559,8 +559,8 @@ void init() {
    rotateZEarth = 1;
 
 
-  //populate our arrays
-  spherevertcount = generateSphere(2, 30);
+    //populate our arrays
+    //spherevertcount = generateSphere(2, 30);
 
     vec4 sphereverts[2592];
 	vec2 spheretexcoords[2592]; // 2592
@@ -603,18 +603,18 @@ void init() {
     glUseProgram(programAllFeatures);
 
 	// Create a vertex array object
-    glGenVertexArrays( 1, &vao[0] );
+ //   glGenVertexArrays( 1, &vao[0] );
 
-    // Create and initialize any buffer objects
-	glBindVertexArray( vao[0] );
-	glGenBuffers( 2, &vbo[0] );
-    glBindBuffer( GL_ARRAY_BUFFER, vbo[0] );
-    glBufferData( GL_ARRAY_BUFFER, spherevertcount*sizeof(vec4), sphere_verts, GL_STATIC_DRAW);
-	
+ //   // Create and initialize any buffer objects
+	//glBindVertexArray( vao[0] );
+	//glGenBuffers( 2, &vbo[0] );
+ //   glBindBuffer( GL_ARRAY_BUFFER, vbo[0] );
+ //   glBufferData( GL_ARRAY_BUFFER, spherevertcount*sizeof(vec4), sphere_verts, GL_STATIC_DRAW);
+	//
 
-	//and now our colors for each vertex
-	glBindBuffer( GL_ARRAY_BUFFER, vbo[1] );
-	glBufferData( GL_ARRAY_BUFFER, spherevertcount*sizeof(vec3), sphere_normals, GL_STATIC_DRAW );
+	////and now our colors for each vertex
+	//glBindBuffer( GL_ARRAY_BUFFER, vbo[1] );
+	//glBufferData( GL_ARRAY_BUFFER, spherevertcount*sizeof(vec3), sphere_normals, GL_STATIC_DRAW );
 
 	setupShader(programAllFeatures);
 
