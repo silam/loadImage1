@@ -1,3 +1,71 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
  *Skeleton lighting program
  *COS490
@@ -23,7 +91,9 @@ int ww=500, wh=500;
 
 #define M_PI 3.14159265358979323846
 
-GLuint program2;
+matrix_stack stack;
+
+GLuint programAllFeatures, programColor, programSpec, programNorm, programCloud;
 
 GLuint vao[1];
 GLuint vbo[2];
@@ -65,9 +135,7 @@ GLuint ambient_light;
 static GLuint texName[5];
 
 GLuint texCoord;
-GLuint texMap;
-
-
+GLuint texMap, cloudMap;
 GLuint normalMap;
 GLuint specMap;
 GLuint nightMap;
@@ -80,9 +148,11 @@ GLuint * spherevao;
 GLuint * spherevbo;
 GLuint * spherenormals;
 
-// CLOUD
+
 GLuint * cloudvao;
 GLuint * cloudvbo;
+GLuint * cloudnormals;
+
 
 /////// EARTH
 int space = 10; //10; // 259200
@@ -143,8 +213,10 @@ void myIdle()
 	glutPostRedisplay();
 
 }
-
-void CreateSphere (vec4 verts[2592], vec2 texcoords[2592], vec3 normals[2592],  double R, double H, double K, double Z) {
+/////////////////////////////////////////
+// Create Sphere
+/////////////////////////////////////////
+void CreateSphere (vec4 verts[2592], vec2 texcoords[2592], vec3 normals[2592], vec4 tangents[2592], double R, double H, double K, double Z) {
     
 	int n;
     double a;
@@ -163,6 +235,7 @@ void CreateSphere (vec4 verts[2592], vec2 texcoords[2592], vec3 normals[2592],  
             
 			normals[n] = vec3(verts[n].x, verts[n].y, verts[n].z);
 			
+
 			n++;
             
 			verts[n] = vec4(R * sin((a) / 180 * M_PI) * sin((b + space) / 180 * M_PI) - H,
@@ -271,7 +344,9 @@ int generateSphere(float radius, int subdiv){
 	}
 	return totalverts;
 }
-
+/////////////////////////////////////////
+// Display
+/////////////////////////////////////////
 void display(void)
 {
   /*clear all pixels*/
@@ -279,11 +354,19 @@ void display(void)
     
     mv = LookAt(vec4(0, 0, 10+z_distance, 1.0), vec4(0, 0, 0, 1.0), vec4(0, 1, 0, 0.0)) * RotateX(-90) * RotateZ(rotateZEarth);
 
-
-
 	mv = mv *  RotateY(view_roty) ;//RotateZ(view_rotz); //RotateX(view_rotx)
-	mv = mv*Scale(2,2,2);
+	
 
+	//////////////////////////////
+	// Display all features
+	/////////////////////////////
+
+	if ( true )
+	{
+	glUseProgram(programAllFeatures);
+	
+	stack.push(mv);
+	mv = mv*Scale(2,2,2);
 	glUniformMatrix4fv(model_view, 1, GL_TRUE, mv);
 	
 	
@@ -294,13 +377,25 @@ void display(void)
 	glUniform4fv(light_color, 1, vec4(1,1,1,1));
 	glUniform4fv(ambient_light, 1, vec4(.5, .5, .5, 5));
 
-
+	
 	// texture unit 0 : color earth
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texName[0]); //which texture do we want?
 	glDrawArrays( GL_QUAD_STRIP, 0, VertexCount );
+	mv = stack.pop();
+
+	// texture unit 1 : cloud earth
+
+	//stack.push(mv);
+	//mv = mv*Scale(2.05,2.05,2.05);
+	//glUniformMatrix4fv(model_view, 1, GL_TRUE, mv);
+	//glActiveTexture(GL_TEXTURE1);
+	//glBindTexture(GL_TEXTURE_2D, texName[1]); //which texture do we want?
+	//glDrawArrays( GL_QUAD_STRIP, 0, VertexCount );
+	//mv = stack.pop();
 
 
+	stack.push(mv);
 	// texture unit 2 : specular earth
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, texName[2]); //which texture do we want?
@@ -311,17 +406,31 @@ void display(void)
 	glActiveTexture(GL_TEXTURE4);
 	glBindTexture(GL_TEXTURE_2D, texName[4]); //which texture do we want?
 	glDrawArrays( GL_QUAD_STRIP, 0, VertexCount );
+	mv = stack.pop();
 
+	}
 
-	//glBindTexture(GL_TEXTURE_2D, texName[4]); //which texture do we want?
-	//glDrawArrays( GL_QUAD_STRIP, 0, VertexCount );
+	//////////////////////////////
+	// Display cloud
+	/////////////////////////////
 
-
-	//glBindVertexArray( vao[0] );
-	//glDrawArrays( GL_QUAD_STRIP, 0, spherevertcount );    // draw the sphere 
+	if ( true )
+	{
+	glUseProgram(programCloud);
+	glActiveTexture(GL_TEXTURE1);
+	mv = mv*Scale(2.1,2.1,2.1);
+	glUniformMatrix4fv(model_view, 1, GL_TRUE, mv);
 
 	
-    
+	glBindTexture(GL_TEXTURE_2D, texName[1]); //which texture do we want?
+	glDrawArrays( GL_QUAD_STRIP, 0, VertexCount );
+
+	}
+
+
+
+    glUseProgram(programAllFeatures);
+
     glFlush();
   /*start processing buffered OpenGL routines*/
   glutSwapBuffers();
@@ -354,32 +463,32 @@ void setupShader(GLuint prog){
 	glVertexAttribPointer(vNormal, 3, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
-void setupEarthShader(GLuint prog)
+void setupEarthShader(GLuint prog, GLuint vao[1], GLuint vbo[3])
 {
-
 	glUseProgram( prog );
 	//glLinkProgram( prog);
 	model_view = glGetUniformLocation(prog, "model_view");
 	projection = glGetUniformLocation(prog, "projection");
 	
 	
-	glBindVertexArray( spherevao[0] );
+	glBindVertexArray( vao[0] );
 
-	glBindBuffer( GL_ARRAY_BUFFER, spherevbo[0] );
+	glBindBuffer( GL_ARRAY_BUFFER, vbo[0] );
 	vPosition = glGetAttribLocation(prog, "vPosition");
 	glEnableVertexAttribArray(vPosition);
 	glVertexAttribPointer(vPosition, 4, GL_FLOAT, GL_FALSE, 0, 0);
 
-	glBindBuffer( GL_ARRAY_BUFFER, spherevbo[1] );
+	glBindBuffer( GL_ARRAY_BUFFER, vbo[1] );
 	texCoord = glGetAttribLocation(prog, "vtexCoord");
 	glEnableVertexAttribArray(texCoord);
 	glVertexAttribPointer(texCoord, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
-	glBindBuffer( GL_ARRAY_BUFFER, spherevbo[2] );
+	glBindBuffer( GL_ARRAY_BUFFER, vbo[2] );
 	vNormal = glGetAttribLocation(prog, "vNormal");
 	glEnableVertexAttribArray(vNormal);
 	glVertexAttribPointer(vNormal, 3, GL_FLOAT, GL_FALSE, 0, 0);
 }
+
 void Keyboard(unsigned char key, int x, int y) {
 	/*exit when the escape key is pressed*/
 	if (key == 27)
@@ -389,7 +498,7 @@ void Keyboard(unsigned char key, int x, int y) {
 		//setupShader(program1);
 	}
 	if (key == 'p'){
-		setupShader(program2);
+		setupShader(programAllFeatures);
 	}
 	if (key == 'c'){
 		//setupShader(program3);
@@ -456,14 +565,17 @@ void init() {
     vec4 sphereverts[2592];
 	vec2 spheretexcoords[2592]; // 2592
 	vec3 spherenormals[2592];
+	vec4 spheretangents[2592];
 
-
-	CreateSphere(sphereverts, spheretexcoords, spherenormals, 2, 0,0,0);
+	CreateSphere(sphereverts, spheretexcoords, spherenormals, spheretangents, 2, 0,0,0);
 
 	/////////////////////////////////////////
 	// Create a vertex array object
 	spherevao = new GLuint[1];
 	spherevbo = new GLuint[3];
+
+	cloudvao = new GLuint[1];
+	cloudvbo = new GLuint[3];
 
 
 	glGenVertexArrays( 1, &spherevao[0] );
@@ -482,10 +594,13 @@ void init() {
 
 
    // Load shaders and use the resulting shader program
-    //program1 = InitShader( "vshader-lighting.glsl", "fshader-lighting.glsl" );
-	program2 = InitShader( "vshader-phongshading.glsl", "fshader-phongshading.glsl" );
-	//program3 = InitShader( "vshader-celshading.glsl", "fshader-celshading.glsl" );
-    glUseProgram(0 );
+    
+	programAllFeatures = InitShader( "vshader-phongshading.glsl", "fshader-phongshading.glsl" );
+	programColor = InitShader( "vshader-color.glsl", "fshader-color.glsl" );
+	programCloud = InitShader( "vshader-cloud.glsl", "fshader-cloud.glsl" );
+
+
+    glUseProgram(programAllFeatures);
 
 	// Create a vertex array object
     glGenVertexArrays( 1, &vao[0] );
@@ -501,13 +616,18 @@ void init() {
 	glBindBuffer( GL_ARRAY_BUFFER, vbo[1] );
 	glBufferData( GL_ARRAY_BUFFER, spherevertcount*sizeof(vec3), sphere_normals, GL_STATIC_DRAW );
 
-	setupShader(program2);
+	setupShader(programAllFeatures);
 
-	setupEarthShader(program2);
+	setupEarthShader(programAllFeatures, spherevao, spherevbo);
 
-	glUseProgram(program2);
+	// set up cloud shader
+	//setupEarthShader(programCloud, cloudvao, cloudvbo);
 
-   ILuint ilTexID[5]; /* ILuint is a 32bit unsigned integer.
+	glUseProgram(programAllFeatures);
+
+
+
+    ILuint ilTexID[5]; /* ILuint is a 32bit unsigned integer.
 
     //Variable texid will be used to store image name. */
    
@@ -541,6 +661,8 @@ void init() {
 	
 	if (true)
 	{
+		glUseProgram(programCloud);
+
 		ilBindImage(ilTexID[1]); /* Binding of IL image name */
 		glBindTexture(GL_TEXTURE_2D, texName[1]); //bind OpenGL texture name
 		loadTexFile("images/earthcloudmap.png");
@@ -551,6 +673,8 @@ void init() {
 	   //Note how we depend on OpenIL to supply information about the file we just loaded in
 		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT),0,
 		ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_TYPE), ilGetData());
+
+		glUseProgram(programAllFeatures);
 	}
 
 
@@ -609,23 +733,31 @@ void init() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    texMap = glGetUniformLocation(program2, "texture");
+    texMap = glGetUniformLocation(programAllFeatures, "texture");
 	glUniform1i(texMap, 0);//assign this one to texture unit 0
-	normalMap = glGetUniformLocation(program2, "normalMap");
-	glUniform1i(normalMap, 1);//assign normal map to 2nd texture unit
-	specMap = glGetUniformLocation(program2, "spectexture");
-	glUniform1i(specMap, 2);//assign spec map to 3nd texture unit
-	nightMap = glGetUniformLocation(program2, "nighttexture");
-	glUniform1i(nightMap, 4);//assign spec map to 3nd texture unit
+	
+	
+	cloudMap = glGetUniformLocation(programCloud, "cloudtexture");
+	glUniform1i(cloudMap, 1);//assign cloud map to  texture unit 1
 
 
+	specMap = glGetUniformLocation(programAllFeatures, "spectexture");
+	glUniform1i(specMap, 2);//assign spec map to 2 texture unit
+	
+	normalMap = glGetUniformLocation(programAllFeatures, "normalMap");
+	glUniform1i(normalMap, 3);//assign normal map to 3 texture unit
+	
+	nightMap = glGetUniformLocation(programAllFeatures, "nighttexture");
+	glUniform1i(nightMap, 4);//assign spec map to 4 texture unit
+	
+	
 	// setup lightning
-	vAmbientDiffuseColor = glGetAttribLocation(program2, "vAmbientDiffuseColor");
-	vSpecularColor = glGetAttribLocation(program2, "vSpecularColor");
-	vSpecularExponent = glGetAttribLocation(program2, "vSpecularExponent");
-	light_position = glGetUniformLocation(program2, "light_position");
-	light_color = glGetUniformLocation(program2, "light_color");
-	ambient_light = glGetUniformLocation(program2, "ambient_light");
+	vAmbientDiffuseColor = glGetAttribLocation(programAllFeatures, "vAmbientDiffuseColor");
+	vSpecularColor = glGetAttribLocation(programAllFeatures, "vSpecularColor");
+	vSpecularExponent = glGetAttribLocation(programAllFeatures, "vSpecularExponent");
+	light_position = glGetUniformLocation(programAllFeatures, "light_position");
+	light_color = glGetUniformLocation(programAllFeatures, "light_color");
+	ambient_light = glGetUniformLocation(programAllFeatures, "ambient_light");
 	
   //Only draw the things in the front layer
 	glEnable(GL_DEPTH_TEST);
@@ -638,7 +770,7 @@ int main(int argc, char **argv)
   glutInitWindowPosition(0, 0); 
   glutInitWindowSize(ww, wh);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-  glutCreateWindow("Lighting Exercise");  
+  glutCreateWindow("The Earth");  
 
   glewExperimental = GL_TRUE;
 

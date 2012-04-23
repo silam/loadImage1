@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{5912f195-ca45-4050-848e-fdcd40840d33}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InitShader.cpp">
@@ -26,9 +29,25 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="fshader-phongshading.glsl" />
-    <None Include="vshader-phongshading.glsl" />
     <None Include="git.txt" />
+    <None Include="fshader-cloud.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="vshader-cloud.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="fshader-color.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="fshader-phongshading.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="vshader-color.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="vshader-phongshading.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="matrix_stack.h">

@@ -79,8 +79,12 @@
     <ClCompile Include="matrix_stack.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="fshader-cloud.glsl" />
+    <None Include="fshader-color.glsl" />
     <None Include="fshader-phongshading.glsl" />
     <None Include="git.txt" />
+    <None Include="vshader-cloud.glsl" />
+    <None Include="vshader-color.glsl" />
     <None Include="vshader-phongshading.glsl" />
   </ItemGroup>
   <ItemGroup>
