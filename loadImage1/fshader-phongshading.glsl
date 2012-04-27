@@ -56,7 +56,6 @@ void main()
 
 
 	fColor = amb + diff + spec;
-	//fColor = vec4( vN, 1);
-
-	//fColor = texture2D(cloudtexture, texCoord);
+	
+	// fColor = texture2D(cloudtexture, texCoord);
 }

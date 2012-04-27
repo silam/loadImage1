@@ -1,1 +1,43 @@
-﻿
+﻿  loadImage1.cpp
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\angel.h(63): warning C4305: 'initializing' : truncation from 'double' to 'const GLfloat'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(698): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(699): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(700): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(721): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(723): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(726): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(743): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(144): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(172): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(172): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(172): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(175): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(175): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(188): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(188): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(188): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(191): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(191): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(206): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(206): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(206): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(211): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(211): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(225): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(225): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(225): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(228): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(228): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(259): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(261): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(273): warning C4305: 'initializing' : truncation from 'double' to 'float'
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(274): warning C4305: 'initializing' : truncation from 'double' to 'float'
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(312): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(333): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(333): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(333): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(390): warning C4305: 'argument' : truncation from 'double' to 'const GLfloat'
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(390): warning C4305: 'argument' : truncation from 'double' to 'const GLfloat'
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(390): warning C4305: 'argument' : truncation from 'double' to 'const GLfloat'
+c:\users\mspprod\documents\visual studio 2010\projects\loadimage1\loadimage1\loadimage1.cpp(137): warning C4715: 'loadTexFile' : not all control paths return a value
+  loadImage1.vcxproj -> C:\Users\mspprod\Documents\Visual Studio 2010\Projects\loadImage1\Debug\loadImage1.exe

@@ -1,9 +1,10 @@
 #version 150
 
 uniform sampler2D texture;
+uniform sampler2D cloudtexture;
 uniform sampler2D nighttexture;
 uniform sampler2D spectexture;
-uniform sampler2D cloudtexture;
+
 
 in vec3 position;
 in vec3 vN;
@@ -21,7 +22,6 @@ in vec2 texCoord;
 
 void main()
 {
-/*
 	float mixfactor;
 	vec3 L = normalize( light_position.xyz - position.xyz);
 	vec3 E = normalize(-position.xyz);
@@ -56,8 +56,6 @@ void main()
 
 
 	//fColor = amb + diff + spec;
-	//fColor = vec4( vN, 1);
-	*/
-
+	
 	fColor = texture2D(cloudtexture, texCoord);
 }

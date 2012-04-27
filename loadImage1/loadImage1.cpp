@@ -1,71 +1,5 @@
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
  *Skeleton lighting program
  *COS490
@@ -79,6 +13,7 @@
 #include <math.h>
 #include <IL/il.h> //notice the OpenIL include
 #include "matrix_stack.h"
+
 
 #pragma comment(lib, "glew32.lib")
 //We have additional libraries to link to now as well
@@ -176,6 +111,7 @@ ILuint loadTexFile(const char* filename){
 		exit(1);
 	  }
  
+	  
 	  success = ilLoadImage((LPTSTR)filename); /* Loading of image from file */
 	if (success){ /* If no error occured: */
 		//We need to figure out whether we have an alpha channel or not
@@ -226,51 +162,70 @@ void CreateSphere (vec4 verts[2592], vec2 texcoords[2592], vec3 normals[2592], v
 	for( b = 0; b <= 180 - space; b+=space){
        
 		for( a = 0; a <= 360 - space; a+=space){
+		//for( a = 360; a >= space; a -= space){
             
+			// 1
+
 			verts[n] = vec4( R * sin((a) / 180 * M_PI) * sin((b) / 180 * M_PI) - H,
 								   R * cos((a) / 180 * M_PI) * sin((b) / 180 * M_PI) + K,
 								   R * cos((b) / 180 * M_PI) - Z, 
-								   1);
-            texcoords[n] = vec2((a) / 360 , (2 * b) / 360);
+								   1); // 1
+			
+			texcoords[n] = vec2( 1 -  (a) / 360 , 
+				                (2 * b) / 360);//1
+			
             
 			normals[n] = vec3(verts[n].x, verts[n].y, verts[n].z);
 			
 
 			n++;
             
-			verts[n] = vec4(R * sin((a) / 180 * M_PI) * sin((b + space) / 180 * M_PI) - H,
+			// 2
+			
+				verts[n] = vec4(R * sin((a) / 180 * M_PI) * sin((b + space) / 180 * M_PI) - H,
 					             R * cos((a) / 180 * M_PI) * sin((b + space) / 180 * M_PI) + K,
 								 R * cos((b + space) / 180 * M_PI) - Z,
-								 1);
-
-			texcoords[n] = vec2((a) / 360 , 
-							(2 *  (b + space)) / 360);
+								 1); // 2
             
+			texcoords[n] = vec2(1 - (a) / 360 , 
+				                (2 *  (b + space)) / 360); //2
             
 			normals[n] = vec3(verts[n].x, verts[n].y, verts[n].z);
 
 			n++;
             
 
-            
+            //3
+			
+         
+			
+
 			verts[n] = vec4(R * sin((a + space) / 180 * M_PI) * sin((b) / 180 * M_PI) - H,
 								R * cos((a + space) / 180 * M_PI) * sin((b) / 180 * M_PI) + K,
 								R * cos((b) / 180 * M_PI) - Z,
-								1);
-         
-			texcoords[n] = vec2((a + space) / 360 ,  (2 *  (b)) / 360 );
+								1); // 3
+
+
+			
+			texcoords[n] = vec2( 1 - (a + space) / 360 , 
+								(2 *  (b)) / 360 ); //3
 
 
 			normals[n] = vec3(verts[n].x, verts[n].y, verts[n].z);
 
 			n++;
             
+
+			// 4
+
+		
 			verts[n] = vec4( R * sin((a + space) / 180 * M_PI) * sin((b + space) /180 * M_PI) - H,
 									R * cos((a + space) / 180 * M_PI) * sin((b + space) / 180 * M_PI) + K,
 									 R * cos((b + space) / 180 * M_PI) - Z,
-									 1);
+									 1); // 4
             
-			texcoords[n] = vec2((a + space) / 360, (2 *  (b + space)) / 360);
+			texcoords[n] = vec2(1 - (a + space) / 360, 
+								(2 *  (b + space)) / 360); //4
 
 			normals[n] = vec3(verts[n].x, verts[n].y, verts[n].z);
 
@@ -356,7 +311,7 @@ void display(void)
     
     mv = LookAt(vec4(0, 0, 10+z_distance, 1.0), vec4(0, 0, 0, 1.0), vec4(0, 1, 0, 0.0)) * RotateX(-90) * RotateZ(rotateZEarth);
 
-	mv = mv *  RotateY(view_roty) ;//RotateZ(view_rotz); //RotateX(view_rotx)
+	//mv = mv *  RotateY(view_roty) ;//RotateZ(view_rotz); //RotateX(view_rotx)
 	
 
 	//////////////////////////////
@@ -367,6 +322,9 @@ void display(void)
 	{
 	glUseProgram(programAllFeatures);
 	
+	model_view = glGetUniformLocation(programAllFeatures, "model_view");
+	projection = glGetUniformLocation(programAllFeatures, "projection");
+
 	stack.push(mv);
 	mv = mv*Scale(2,2,2);
 	glUniformMatrix4fv(model_view, 1, GL_TRUE, mv);
@@ -416,11 +374,20 @@ void display(void)
 	// Display cloud
 	/////////////////////////////
 
-	if ( true )
+	if ( false )
 	{
-	glUseProgram(programCloud);
+	glUseProgram(programAllFeatures);
+	model_view = glGetUniformLocation(programAllFeatures, "model_view");
+	projection = glGetUniformLocation(programAllFeatures, "projection");
+	
+	//glUseProgram(programCloud);
+	//model_view = glGetUniformLocation(programCloud, "model_view");
+	//projection = glGetUniformLocation(programCloud, "projection");
+
+	
+	
 	glActiveTexture(GL_TEXTURE1);
-	mv = mv*Scale(2.2,2.2,2.2);
+	mv = mv*Scale(2.01,2.01,2.01);
 	glUniformMatrix4fv(model_view, 1, GL_TRUE, mv);
 
 	glBindTexture(GL_TEXTURE_2D, texName[1]); //which texture do we want?
@@ -428,8 +395,7 @@ void display(void)
 
 	}
 
-
-
+	
     glUseProgram(programAllFeatures);
 
     glFlush();
@@ -467,30 +433,27 @@ void setupShader(GLuint prog){
 ///////////////////////
 // Setup Earth buffers for Shader
 ///////////////////////
-void setupEarthShader(GLuint prog, GLuint vao[1], GLuint vbo[3])
+void setupEarthShader(GLuint prog, GLuint _vao[1], GLuint _vbo[3])
 {
 	glUseProgram( prog );
 	//glLinkProgram( prog);
-	model_view = glGetUniformLocation(prog, "model_view");
-	projection = glGetUniformLocation(prog, "projection");
-	
-	
-	glBindVertexArray( vao[0] );
+		
+	glBindVertexArray( _vao[0] );
 
-	glBindBuffer( GL_ARRAY_BUFFER, vbo[0] );
-	GLuint vPosition = glGetAttribLocation(prog, "vPosition");
-	glEnableVertexAttribArray(vPosition);
-	glVertexAttribPointer(vPosition, 4, GL_FLOAT, GL_FALSE, 0, 0);
+	glBindBuffer( GL_ARRAY_BUFFER, _vbo[0] );
+	GLuint lPosition = glGetAttribLocation(prog, "vPosition");
+	glEnableVertexAttribArray(lPosition);
+	glVertexAttribPointer(lPosition, 4, GL_FLOAT, GL_FALSE, 0, 0);
 
-	glBindBuffer( GL_ARRAY_BUFFER, vbo[1] );
-	GLuint texCoord = glGetAttribLocation(prog, "vtexCoord");
-	glEnableVertexAttribArray(texCoord);
-	glVertexAttribPointer(texCoord, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glBindBuffer( GL_ARRAY_BUFFER, _vbo[1] );
+	GLuint ltexCoord = glGetAttribLocation(prog, "vtexCoord");
+	glEnableVertexAttribArray(ltexCoord);
+	glVertexAttribPointer(ltexCoord, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
-	glBindBuffer( GL_ARRAY_BUFFER, vbo[2] );
-	GLuint vNormal = glGetAttribLocation(prog, "vNormal");
-	glEnableVertexAttribArray(vNormal);
-	glVertexAttribPointer(vNormal, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glBindBuffer( GL_ARRAY_BUFFER, _vbo[2] );
+	GLuint lNormal = glGetAttribLocation(prog, "vNormal");
+	glEnableVertexAttribArray(lNormal);
+	glVertexAttribPointer(lNormal, 3, GL_FLOAT, GL_FALSE, 0, 0);
 }
 /////////////////////////////////
 // KEyboard function
@@ -579,7 +542,15 @@ void init() {
 	vec3 spherenormals[2592];
 	vec4 spheretangents[2592];
 
+	vec4 cloudverts[2592];
+	vec2 cloudtexcoords[2592]; // 2592
+	vec3 cloudnormals[2592];
+	vec4 cloudtangents[2592];
+
 	CreateSphere(sphereverts, spheretexcoords, spherenormals, spheretangents, 2, 0,0,0);
+
+	// create cloud
+	CreateSphere(cloudverts, cloudtexcoords, cloudnormals, cloudtangents, 2, 0,0,0);
 
 	/////////////////////////////////////////
 	// Create a vertex array object
@@ -615,13 +586,13 @@ void init() {
 	glBindVertexArray( cloudvao[0] );
 	glGenBuffers( 2, &cloudvbo[0] );
 	glBindBuffer( GL_ARRAY_BUFFER, cloudvbo[0] );
-	glBufferData( GL_ARRAY_BUFFER, VertexCount*sizeof(vec4), sphereverts, GL_STATIC_DRAW);
+	glBufferData( GL_ARRAY_BUFFER, VertexCount*sizeof(vec4), cloudverts, GL_STATIC_DRAW);
 
 	glBindBuffer( GL_ARRAY_BUFFER, cloudvbo[1] );
-	glBufferData( GL_ARRAY_BUFFER, VertexCount*sizeof(vec2), spheretexcoords, GL_STATIC_DRAW);
+	glBufferData( GL_ARRAY_BUFFER, VertexCount*sizeof(vec2), cloudtexcoords, GL_STATIC_DRAW);
 
 	glBindBuffer( GL_ARRAY_BUFFER, cloudvbo[2] );
-	glBufferData( GL_ARRAY_BUFFER, VertexCount*sizeof(vec3), spherenormals, GL_STATIC_DRAW);
+	glBufferData( GL_ARRAY_BUFFER, VertexCount*sizeof(vec3), cloudnormals, GL_STATIC_DRAW);
 
    // Load shaders and use the resulting shader program
     
@@ -648,12 +619,21 @@ void init() {
 
 	// setupShader(programAllFeatures);
 
+
+	model_view = glGetUniformLocation(programAllFeatures, "model_view");
+	projection = glGetUniformLocation(programAllFeatures, "projection");
+	
 	setupEarthShader(programAllFeatures, spherevao, spherevbo);
 
+	
 	// set up cloud shader
+	// This is where I have error that whenever I use setupearthshader for cloud
+	// I have bad images rendered. 
+	// I don't understand and keep looking errors why but give up cloud
 	// setupEarthShader(programCloud, cloudvao, cloudvbo);
 
 	glUseProgram(programAllFeatures);
+
 
     ILuint ilTexID[5]; /* ILuint is a 32bit unsigned integer.
 
@@ -676,13 +656,13 @@ void init() {
 		loadTexFile("images/Earth.png");
 		glBindTexture(GL_TEXTURE_2D, texName[0]); //bind OpenGL texture name
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); //GL_NEAREST);
 	   //Note how we depend on OpenIL to supply information about the file we just loaded in
 		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT),0,
 		ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_TYPE), ilGetData());
 
-
+		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 
 	// load cloud
@@ -696,12 +676,12 @@ void init() {
 		loadTexFile("images/earthcloudmap.png");
 		
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); //GL_NEAREST);
 	   //Note how we depend on OpenIL to supply information about the file we just loaded in
 		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT),0,
 		ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_TYPE), ilGetData());
-				
+		glGenerateMipmap(GL_TEXTURE_2D);		
 	}
 
 
@@ -715,11 +695,12 @@ void init() {
 		loadTexFile("images/EarthSpec.png");
 		
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); //GL_NEAREST);
 	   //Note how we depend on OpenIL to supply information about the file we just loaded in
 		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT),0,
 		ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_TYPE), ilGetData());
+		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 
 
@@ -731,11 +712,12 @@ void init() {
 		loadTexFile("images/EarthNormal.png");
 		
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); //GL_NEAREST);
 	   //Note how we depend on OpenIL to supply information about the file we just loaded in
 		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT),0,
 		ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_TYPE), ilGetData());
+		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 
 	// Night map
@@ -746,11 +728,12 @@ void init() {
 		loadTexFile("images/EarthNight.png");
 		
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); //GL_NEAREST);
 	   //Note how we depend on OpenIL to supply information about the file we just loaded in
 		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT),0,
 		ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_TYPE), ilGetData());
+		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 
 
